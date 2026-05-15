@@ -16,25 +16,31 @@ function App() {
   };
 
   return (
-    <div>
-      {/* Temp nav — Faiz will replace this with the real Navbar */}
-      <nav style={{ background: "#0f172a", padding: "14px 32px", display: "flex", gap: 16 }}>
-        <button onClick={() => setActivePage("opportunities")}
-          style={{ color: activePage === "opportunities" ? "#60a5fa" : "#94a3b8", background: "none", border: "none", cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
+    <div className="app-layout">
+      <nav className="app-nav">
+        <button
+          onClick={() => setActivePage("opportunities")}
+          style={{ color: activePage === "opportunities" ? "#4db8a8" : "#c4b8e8" }}
+        >
           🔍 Opportunities
         </button>
-        <button onClick={() => setActivePage("tracker")}
-          style={{ color: activePage === "tracker" ? "#60a5fa" : "#94a3b8", background: "none", border: "none", cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
+        <button
+          onClick={() => setActivePage("tracker")}
+          style={{ color: activePage === "tracker" ? "#4db8a8" : "#c4b8e8" }}
+        >
           📌 Tracker ({bookmarkedIds.size})
         </button>
       </nav>
 
-      {activePage === "opportunities"
-        ? <OpportunitiesPage bookmarkedIds={bookmarkedIds} onBookmark={handleBookmark} />
-        : <DeadlineTrackerPage bookmarkedIds={bookmarkedIds} onBookmark={handleBookmark} />
-      }
+      <div className="app-content">
+        {activePage === "opportunities"
+          ? <OpportunitiesPage bookmarkedIds={bookmarkedIds} onBookmark={handleBookmark} />
+          : <DeadlineTrackerPage bookmarkedIds={bookmarkedIds} onBookmark={handleBookmark} onViewDetail={() => {}} />
+        }
+      </div>
     </div>
   );
 }
 
 export default App;
+
