@@ -33,7 +33,6 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
       display: "flex", flexDirection: "column",
       minHeight: "100vh",
     }}>
-      {/* Header */}
       <div style={{
         background: "#3d2a7a", padding: "14px 24px",
         display: "flex", justifyContent: "flex-end", flexShrink: 0,
@@ -51,7 +50,6 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
         </button>
       </div>
 
-      {/* Body */}
       <div style={{
         background: "#e8e4f5", flex: 1,
         padding: "24px",
@@ -59,12 +57,11 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
         <div style={{
           display: "flex",
           gap: "24px",
-          alignItems: "flex-start",
+          alignItems: "stretch",
           width: "100%",
           flexWrap: "wrap",
         }}>
 
-          {/* Left Panel */}
           <div style={{
             flex: 1,
             minWidth: "280px",
@@ -73,7 +70,7 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
             padding: "24px 28px",
             boxShadow: "0 10px 18px rgba(0,0,0,0.06)",
           }}>
-            <h2 style={{ margin: "0 0 8px", fontSize: "22px", fontWeight: 600, color: "#18191C", fontFamily: "Poppins, Inter, sans-serif", lineHeight: 1.3 }}>
+            <h2 style={{ margin: "0 0 8px", fontSize: "25px", fontWeight: 500, color: "#18191C", fontFamily: "Poppins, Inter, sans-serif", lineHeight: "54px" }}>
               {opp.title}
             </h2>
 
@@ -83,20 +80,20 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
                 borderRadius: "4px", padding: "4px 12px",
                 fontSize: "11px", fontWeight: 700, textTransform: "uppercase"
               }}>{opp.type}</span>
-              <span style={{ fontSize: "14px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <span style={{ fontSize: "16px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                 </svg>
                 Posted 2 days ago
               </span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px", height: "48px" }}>
               <CompanyLogo company={opp.company} size={38} />
-              <span style={{ fontSize: "16px", fontWeight: 600, color: "#1e1b3a" }}>{opp.company}</span>
+              <span style={{ fontSize: "16px", fontWeight: 600, color: "#1e1b3a", fontFamily: "Inter, sans-serif" }}>{opp.company}</span>
             </div>
 
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "20px" }}>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px", alignItems: "center" }}>
               {[opp.paid ? "Paid" : "Unpaid", "Urgent", opp.major].map(tag => (
                 <span key={tag} style={{
                   background: "#e2e2e2", border: "1px solid #c8c8c8",
@@ -113,7 +110,7 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
               display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
               border: "1px solid #E4E5E8", borderRadius: "8px",
-              overflow: "hidden", marginBottom: "24px"
+              overflow: "hidden", marginBottom: "28px"
             }}>
               {[
                 { icon: "📍", label: "Location", value: opp.location },
@@ -176,16 +173,15 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
             </div>
           </div>
 
-          {/* Right Panel */}
           <div style={{
             width: "341px",
             flexShrink: 0,
             display: "flex",
             flexDirection: "column",
             gap: "20px",
+            alignSelf: "stretch",
           }}>
 
-            {/* Apply Now Card */}
             <div style={{
               height: "526px",
               overflow: "hidden",
@@ -247,9 +243,8 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
               </div>
             </div>
 
-            {/* About Organization Card */}
             <div style={{
-              height: "387px",
+              flex: 1,
               overflow: "hidden",
               background: "linear-gradient(135deg, #CBF6F7 0%, #FFFFFF 100%)",
               borderRadius: "8px", border: "1px solid #E4E5E8",
@@ -284,3 +279,4 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
     </div>
   );
 }
+
