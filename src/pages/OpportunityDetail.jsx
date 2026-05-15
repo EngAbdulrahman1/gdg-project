@@ -28,12 +28,13 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
 
   return (
     <div style={{
-      flex: 1, height: "100vh",
+      flex: 1,
       fontFamily: "'Inter', 'Sora', 'Segoe UI', sans-serif",
-      display: "flex", flexDirection: "column", overflow: "hidden",
+      display: "flex", flexDirection: "column",
+      minHeight: "100vh",
     }}>
       <div style={{
-        background: "#3d2a7a", padding: "14px 40px",
+        background: "#3d2a7a", padding: "14px 24px",
         display: "flex", justifyContent: "flex-end", flexShrink: 0,
       }}>
         <button onClick={onBack} style={{
@@ -50,49 +51,49 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
       </div>
 
       <div style={{
-        background: "#e8e4f5", flex: 1, minHeight: 0,
-        padding: "28px 37px", display: "flex", overflow: "hidden",
+        background: "#e8e4f5", flex: 1,
+        padding: "24px",
       }}>
         <div style={{
-          display: "flex", gap: "24px",
-          alignItems: "stretch", width: "100%", height: "100%",
+          display: "flex",
+          gap: "24px",
+          alignItems: "flex-start",
+          width: "100%",
+          flexWrap: "wrap",
         }}>
 
-          
           <div style={{
             flex: 1,
+            minWidth: "280px",
             background: "linear-gradient(135deg, #CBF6F7 0%, #FFFFFF 100%)",
             borderRadius: "8px", border: "1px solid #E4E5E8",
-            padding: "24px 32px", overflowY: "auto", minHeight: 0,
+            padding: "24px 28px",
             boxShadow: "0 10px 18px rgba(0,0,0,0.06)",
           }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
-              <h2 style={{ margin: 0, fontSize: "25px", fontWeight: 500, color: "#18191C", fontFamily: "Poppins, Inter, sans-serif", lineHeight: "54px" }}>
-                {opp.title}
-              </h2>
-            </div>
+            <h2 style={{ margin: "0 0 8px", fontSize: "22px", fontWeight: 600, color: "#18191C", fontFamily: "Poppins, Inter, sans-serif", lineHeight: 1.3 }}>
+              {opp.title}
+            </h2>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px", flexWrap: "wrap" }}>
               <span style={{
                 background: colors.bg, color: colors.text,
                 borderRadius: "4px", padding: "4px 12px",
                 fontSize: "11px", fontWeight: 700, textTransform: "uppercase"
               }}>{opp.type}</span>
-              <span style={{ fontSize: "16px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px", fontFamily: "Inter, sans-serif" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <span style={{ fontSize: "14px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                 </svg>
                 Posted 2 days ago
               </span>
             </div>
 
-            
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px", height: "48px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
               <CompanyLogo company={opp.company} size={38} />
-              <span style={{ fontSize: "16px", fontWeight: 600, color: "#1e1b3a", fontFamily: "Inter, sans-serif" }}>{opp.company}</span>
+              <span style={{ fontSize: "16px", fontWeight: 600, color: "#1e1b3a" }}>{opp.company}</span>
             </div>
 
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "24px", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "20px" }}>
               {[opp.paid ? "Paid" : "Unpaid", "Urgent", opp.major].map(tag => (
                 <span key={tag} style={{
                   background: "#e2e2e2", border: "1px solid #c8c8c8",
@@ -106,9 +107,10 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
             </div>
 
             <div style={{
-              display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
               border: "1px solid #E4E5E8", borderRadius: "8px",
-              overflow: "hidden", marginBottom: "28px"
+              overflow: "hidden", marginBottom: "24px"
             }}>
               {[
                 { icon: "📍", label: "Location", value: opp.location },
@@ -117,10 +119,11 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
                 { icon: "📋", label: "Major", value: opp.major },
               ].map((item, i) => (
                 <div key={i} style={{
-                  padding: "14px 18px", background: "rgba(255,255,255,0.5)",
-                  borderRight: i < 3 ? "1px solid #E4E5E8" : "none",
+                  padding: "12px 16px", background: "rgba(255,255,255,0.5)",
+                  borderRight: i % 2 === 0 ? "1px solid #E4E5E8" : "none",
+                  borderBottom: i < 2 ? "1px solid #E4E5E8" : "none",
                 }}>
-                  <p style={{ margin: "0 0 4px", fontSize: "11px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                  <p style={{ margin: "0 0 4px", fontSize: "11px", color: "#64748b" }}>
                     {item.icon} {item.label}:
                   </p>
                   <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#334155" }}>{item.value}</p>
@@ -128,27 +131,27 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
               ))}
             </div>
 
-            <h3 style={{ fontSize: "18px", fontWeight: 500, color: "#18191C", marginBottom: "8px", fontFamily: "Inter, sans-serif", lineHeight: "28px" }}>About this Opportunity:</h3>
-            <p style={{ fontSize: "16px", fontWeight: 400, color: "#5E6670", lineHeight: "24px", marginBottom: "22px", fontFamily: "Inter, sans-serif" }}>{opp.description}</p>
+            <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#18191C", marginBottom: "8px" }}>About this Opportunity:</h3>
+            <p style={{ fontSize: "15px", color: "#5E6670", lineHeight: "24px", marginBottom: "20px" }}>{opp.description}</p>
 
-            <h3 style={{ fontSize: "18px", fontWeight: 500, color: "#18191C", marginBottom: "8px", fontFamily: "Inter, sans-serif" }}>Responsibilities</h3>
-            <ul style={{ margin: "0 0 22px", paddingLeft: "20px", fontSize: "16px", fontWeight: 400, color: "#5E6670", lineHeight: "24px", fontFamily: "Inter, sans-serif" }}>
+            <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#18191C", marginBottom: "8px" }}>Responsibilities</h3>
+            <ul style={{ margin: "0 0 20px", paddingLeft: "20px", fontSize: "15px", color: "#5E6670", lineHeight: "26px" }}>
               <li>Design user interface for web and mobile</li>
               <li>Collaborate with product managers and developers</li>
               <li>Conduct user research and user testing</li>
               <li>Contribute to design system and flow</li>
             </ul>
 
-            <h3 style={{ fontSize: "18px", fontWeight: 500, color: "#18191C", marginBottom: "8px", fontFamily: "Inter, sans-serif" }}>Requirements</h3>
-            <ul style={{ margin: "0 0 22px", paddingLeft: "20px", fontSize: "16px", fontWeight: 400, color: "#5E6670", lineHeight: "24px", fontFamily: "Inter, sans-serif" }}>
+            <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#18191C", marginBottom: "8px" }}>Requirements</h3>
+            <ul style={{ margin: "0 0 20px", paddingLeft: "20px", fontSize: "15px", color: "#5E6670", lineHeight: "26px" }}>
               <li>Major: {opp.major}</li>
               <li>No professional experience required</li>
               <li>Familiarity with version control and project management systems</li>
               <li>Great troubleshooting and analytical skills</li>
             </ul>
 
-            <h3 style={{ fontSize: "18px", fontWeight: 500, color: "#18191C", marginBottom: "8px", fontFamily: "Inter, sans-serif" }}>Benefits</h3>
-            <ul style={{ margin: "0 0 28px", paddingLeft: "20px", fontSize: "16px", fontWeight: 400, color: "#5E6670", lineHeight: "24px", fontFamily: "Inter, sans-serif" }}>
+            <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#18191C", marginBottom: "8px" }}>Benefits</h3>
+            <ul style={{ margin: "0 0 24px", paddingLeft: "20px", fontSize: "15px", color: "#5E6670", lineHeight: "26px" }}>
               <li>Hands-on industry experience</li>
               <li>Mentorship from experienced designers</li>
               <li>Certificate upon completion</li>
@@ -171,45 +174,40 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
             </div>
           </div>
 
-          
           <div style={{
-            width: "341px", flexShrink: 0,
-            display: "flex", flexDirection: "column",
-            gap: "20px", height: "fit-content",
+            width: "320px",
+            minWidth: "280px",
+            flexShrink: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
           }}>
 
-            
             <div style={{
-              minHeight: "526px",
               background: "linear-gradient(135deg, #CBF6F7 0%, #FFFFFF 100%)",
               borderRadius: "8px", border: "1px solid #E4E5E8",
               padding: "24px", display: "flex", flexDirection: "column",
               boxShadow: "0 10px 18px rgba(0,0,0,0.06)",
             }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-                <h3 style={{ margin: 0, fontSize: "25px", fontWeight: 500, color: "#18191C", fontFamily: "Poppins, sans-serif", lineHeight: "38px" }}>Apply Now</h3>
+                <h3 style={{ margin: 0, fontSize: "22px", fontWeight: 600, color: "#18191C", fontFamily: "Poppins, sans-serif" }}>Apply Now</h3>
                 <button onClick={() => onBookmark(opp.id)} style={{
-                  background: "none", border: "none", cursor: "pointer",
-                  padding: "2px", transition: "opacity 0.15s", width: "30px", height: "26px"
-                }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = "0.7"}
-                  onMouseLeave={e => e.currentTarget.style.opacity = "1"}
-                >
+                  background: "none", border: "none", cursor: "pointer", padding: "2px"
+                }}>
                   <BookmarkIcon filled={isBookmarked} />
                 </button>
               </div>
 
-              <p style={{ margin: "0 0 4px", fontSize: "22px", fontWeight: 500, color: "#18191C", fontFamily: "Poppins, sans-serif", lineHeight: "33px" }}>Deadline:</p>
-              <p style={{ margin: "0 0 24px", fontSize: "22px", fontWeight: 700, color: "#e05252", fontFamily: "Poppins, sans-serif" }}>{deadlineStr}</p>
+              <p style={{ margin: "0 0 4px", fontSize: "18px", fontWeight: 500, color: "#18191C", fontFamily: "Poppins, sans-serif" }}>Deadline:</p>
+              <p style={{ margin: "0 0 24px", fontSize: "18px", fontWeight: 700, color: "#e05252", fontFamily: "Poppins, sans-serif" }}>{deadlineStr}</p>
 
-              <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 <a href={opp.link} style={{
                   display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
                   background: "#09ADB0", color: "#fff", borderRadius: "8px",
-                  padding: "0", fontSize: "14px", fontWeight: 600,
+                  padding: "16px", fontSize: "14px", fontWeight: 600,
                   textDecoration: "none", transition: "background 0.15s",
-                  width: "100%", height: "64px",
-                  fontFamily: "Inter, sans-serif",
+                  width: "100%",
                 }}
                   onMouseEnter={e => e.currentTarget.style.background = "#078a8c"}
                   onMouseLeave={e => e.currentTarget.style.background = "#09ADB0"}
@@ -225,7 +223,7 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
                 <button onClick={() => onBookmark(opp.id)} style={{
                   background: "rgba(255,255,255,0.8)", color: "#09ADB0",
                   border: "1.5px solid #09ADB0", borderRadius: "8px",
-                  width: "100%", height: "64px", fontSize: "14px", fontWeight: 600,
+                  width: "100%", padding: "16px", fontSize: "14px", fontWeight: 600,
                   cursor: "pointer", display: "flex", alignItems: "center",
                   justifyContent: "center", gap: "8px",
                   fontFamily: "inherit", transition: "all 0.15s",
@@ -239,32 +237,27 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
               </div>
             </div>
 
-            
             <div style={{
-              minHeight: "387px",
               background: "linear-gradient(135deg, #CBF6F7 0%, #FFFFFF 100%)",
               borderRadius: "8px", border: "1px solid #E4E5E8",
               padding: "24px", display: "flex", flexDirection: "column",
               boxShadow: "0 10px 18px rgba(0,0,0,0.06)",
             }}>
-              <h3 style={{ margin: "0 0 16px", fontSize: "16px", fontWeight: 700, color: "#1e1b3a", display: "flex", alignItems: "center", gap: "6px" }}>
+              <h3 style={{ margin: "0 0 16px", fontSize: "16px", fontWeight: 700, color: "#1e1b3a" }}>
                 🙂 About this Organization!
               </h3>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px", height: "48px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
                 <CompanyLogo company={opp.company} size={40} />
-                <span style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b3a", fontFamily: "Inter, sans-serif" }}>{opp.company}</span>
+                <span style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b3a" }}>{opp.company}</span>
               </div>
-              <p style={{ margin: "0 0 10px", fontSize: "14px", fontWeight: 400, color: "#767F8C", lineHeight: "20px", fontFamily: "Inter, sans-serif", width: "226px" }}>
-                A leading organization focused on Vision 2030 goals... [ Read more ]
+              <p style={{ margin: "0 0 10px", fontSize: "14px", color: "#767F8C", lineHeight: "20px" }}>
+                A leading organization focused on Vision 2030 goals...
               </p>
               <button style={{
                 background: "none", border: "none", cursor: "pointer",
                 fontSize: "13px", color: "#09ADB0", padding: 0, fontWeight: 600,
-                transition: "color 0.15s", textAlign: "left", fontFamily: "Inter, sans-serif",
-              }}
-                onMouseEnter={e => e.currentTarget.style.color = "#078a8c"}
-                onMouseLeave={e => e.currentTarget.style.color = "#09ADB0"}
-              >
+                textAlign: "left", fontFamily: "Inter, sans-serif",
+              }}>
                 [ Read more ]
               </button>
             </div>
@@ -275,4 +268,3 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
     </div>
   );
 }
-

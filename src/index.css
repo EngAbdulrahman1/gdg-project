@@ -50,6 +50,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .page-body {
@@ -63,6 +65,13 @@ body {
   border-bottom: 1px solid #d4cef0;
   margin-bottom: 0;
   margin-top: 60px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tabs-row::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-btn {
@@ -79,14 +88,12 @@ body {
   font-weight: 500;
 }
 
-
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-top: 20px;
 }
-
 
 .opp-card {
   background: linear-gradient(135deg, #CBF6F7 0%, #FFFFFF 100%);
@@ -102,7 +109,6 @@ body {
   overflow: hidden;
   height: 316px;
 }
-
 
 .opp-card:hover {
   box-shadow: 0 10px 28px rgba(0,0,0,0.12);
@@ -155,5 +161,94 @@ body {
   text-align: center;
   padding: 60px 20px;
   color: #6b5c9e;
+}
+
+
+
+@media (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .app-nav {
+    width: 120px;
+    min-width: 120px;
+  }
+
+  .page-header {
+    padding: 16px 20px;
+  }
+
+  .page-body {
+    padding: 0 20px 24px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .app-nav {
+    width: 100%;
+    min-width: unset;
+    flex-direction: row;
+    padding: 0;
+    overflow-x: auto;
+  }
+
+  .app-nav button {
+    padding: 14px 20px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+  }
+
+  .page-header {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-header > div:last-child {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .page-header input {
+    width: 100% !important;
+  }
+
+  .page-body {
+    padding: 0 16px 24px;
+  }
+
+  .tabs-row {
+    margin-top: 20px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .opp-card {
+    height: auto;
+    min-height: 200px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 20px !important;
+  }
+
+  .tab-btn {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
 }
 
