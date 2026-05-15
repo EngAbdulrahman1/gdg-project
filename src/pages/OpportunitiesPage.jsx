@@ -1,7 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { OPPORTUNITIES } from "../data/opportunities";
 import { OpportunityCard } from "../components/OpportunityCard";
 import OpportunityDetail from "./OpportunityDetail";
+
+const BASE_URL = "https://opportunityhub-api.onrender.com/api";
 
 const TABS = ["All", "Internships", "Scholarships", "Programs", "Volunteering", "COOPs"];
 const TAB_TYPE_MAP = {
@@ -17,16 +19,48 @@ export default function OpportunitiesPage({ bookmarkedIds, onBookmark }) {
   const [search, setSearch] = useState("");
   const [major, setMajor] = useState("Major");
   const [selectedOpp, setSelectedOpp] = useState(null);
+  const [opportunities, setOpportunities] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filtered = useMemo(() => {
-    return OPPORTUNITIES.filter(o => {
-      if (activeTab !== "All" && o.type !== TAB_TYPE_MAP[activeTab]) return false;
-      if (search && !o.title.toLowerCase().includes(search.toLowerCase()) &&
-        !o.company.toLowerCase().includes(search.toLowerCase())) return false;
-      if (major !== "Major" && o.major !== major) return false;
-      return true;
-    });
+  useEffect(() => {
+    const fetchOpportunities = async () => {
+      setLoading(true);
+      try {
+        let url = `${BASE_URL}/opportunities/?limit=100`;
+        if (activeTab !== "All") url += `&type=${TAB_TYPE_MAP[activeTab]}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+        if (major !== "Major") url += `&major=${encodeURIComponent(major)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setOpportunities(data.results?.length ? data.results : OPPORTUNITIES);
+      } catch {
+        setOpportunities(OPPORTUNITIES);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const delay = setTimeout(fetchOpportunities, 400);
+    return () => clearTimeout(delay);
   }, [activeTab, search, major]);
+
+  const normalized = opportunities.map(o => ({
+    id: o.id,
+    title: o.title,
+    type: o.opportunity_type || o.type,
+    paid: o.is_paid ?? o.paid,
+    urgent: o.is_urgent ?? o.urgent,
+    company: o.organization_name || o.company,
+    major: o.major,
+    location: o.location?.replace(", Saudi Arabia", "") || "",
+    deadline: o.application_deadline || o.deadline,
+    description: o.description,
+    link: o.external_url || o.link || "#",
+    responsibilities: o.responsibilities,
+    requirements: o.requirements,
+    benefits: o.benefits,
+    isExpired: o.is_expired,
+  }));
 
   if (selectedOpp) {
     return (
@@ -70,39 +104,38 @@ export default function OpportunitiesPage({ bookmarkedIds, onBookmark }) {
             <span style={{ color: "#94a3b8", fontSize: "14px", marginLeft: "8px" }}>🔍</span>
           </div>
 
- <div style={{
-  display: "flex", alignItems: "center", gap: "4px",
-  background: "#fff", borderRadius: "999px",
-  padding: "0 14px",
-  border: "1px solid #e2e8f0",
-  width: "112px",
-  height: "40px",
-  boxSizing: "border-box",
-  cursor: "pointer",
-}}>
-  <select
-    value={major}
-    onChange={e => setMajor(e.target.value)}
-    style={{
-      border: "none", outline: "none", fontSize: "13px",
-      color: "#1e1b3a", background: "transparent",
-      cursor: "pointer", fontFamily: "inherit",
-      appearance: "none", WebkitAppearance: "none",
-      fontWeight: 600, flex: 1, minWidth: 0,
-    }}
-  >
-    <option>Major</option>
-    <option>Engineering</option>
-    <option>Computer Science</option>
-    <option>Business</option>
-    <option>Science & Tech</option>
-    <option>Design</option>
-  </select>
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e1b3a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-    <polyline points="6 9 12 15 18 9"/>
-  </svg>
-</div>
-
+          <div style={{
+            display: "flex", alignItems: "center", gap: "4px",
+            background: "#fff", borderRadius: "999px",
+            padding: "0 14px",
+            border: "1px solid #e2e8f0",
+            width: "112px",
+            height: "40px",
+            boxSizing: "border-box",
+            cursor: "pointer",
+          }}>
+            <select
+              value={major}
+              onChange={e => setMajor(e.target.value)}
+              style={{
+                border: "none", outline: "none", fontSize: "13px",
+                color: "#1e1b3a", background: "transparent",
+                cursor: "pointer", fontFamily: "inherit",
+                appearance: "none", WebkitAppearance: "none",
+                fontWeight: 600, flex: 1, minWidth: 0,
+              }}
+            >
+              <option>Major</option>
+              <option>Engineering</option>
+              <option>Computer Science</option>
+              <option>Business</option>
+              <option>Science & Tech</option>
+              <option>Design</option>
+            </select>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e1b3a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
 
           <div style={{
             width: 40, height: 40, borderRadius: "50%",
@@ -132,14 +165,19 @@ export default function OpportunitiesPage({ bookmarkedIds, onBookmark }) {
           ))}
         </div>
 
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="empty-state">
+            <div style={{ fontSize: 48, marginBottom: 12 }}>⏳</div>
+            <p>Loading opportunities...</p>
+          </div>
+        ) : normalized.length === 0 ? (
           <div className="empty-state">
             <div style={{ fontSize: 48, marginBottom: 12 }}>🔎</div>
             <p>No opportunities found.</p>
           </div>
         ) : (
           <div className="cards-grid">
-            {filtered.map(opp => (
+            {normalized.map(opp => (
               <OpportunityCard
                 key={opp.id}
                 opp={opp}
