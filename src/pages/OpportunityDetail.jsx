@@ -175,12 +175,12 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
           <div style={{
             width: "341px", flexShrink: 0,
             display: "flex", flexDirection: "column",
-            gap: "20px", height: "100%", minHeight: 0,
+            gap: "20px", height: "fit-content",
           }}>
 
             
             <div style={{
-              height: "526px", flexShrink: 0,
+              minHeight: "526px",
               background: "linear-gradient(135deg, #CBF6F7 0%, #FFFFFF 100%)",
               borderRadius: "8px", border: "1px solid #E4E5E8",
               padding: "24px", display: "flex", flexDirection: "column",
@@ -241,7 +241,7 @@ export default function OpportunityDetail({ opp, isBookmarked, onBookmark, onBac
 
             
             <div style={{
-              height: "387px", flexShrink: 0,
+              minHeight: "387px",
               background: "linear-gradient(135deg, #CBF6F7 0%, #FFFFFF 100%)",
               borderRadius: "8px", border: "1px solid #E4E5E8",
               padding: "24px", display: "flex", flexDirection: "column",
