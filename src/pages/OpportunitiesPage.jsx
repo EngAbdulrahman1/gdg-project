@@ -3,7 +3,7 @@ import { OPPORTUNITIES } from "../data/opportunities";
 import { OpportunityCard } from "../components/OpportunityCard";
 import OpportunityDetail from "./OpportunityDetail";
 
-const BASE_URL = "https://opportunityhub-api.onrender.com/api";
+const BASE_URL = "https://opportunityhub-api.onrender.com/api"; //v2
 
 const TABS = ["All", "Internships", "Scholarships", "Programs", "Volunteering", "COOPs"];
 const TAB_TYPE_MAP = {
