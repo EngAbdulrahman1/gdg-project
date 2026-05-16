@@ -3,7 +3,7 @@ import { OPPORTUNITIES } from "../data/opportunities";
 import { OpportunityCard } from "../components/OpportunityCard";
 import OpportunityDetail from "./OpportunityDetail";
 
-const BASE_URL = "https://opportunityhub-api.onrender.com/api"; //v2
+const BASE_URL = "https://opportunityhub-api.onrender.com/api";
 
 const TABS = ["All", "Internships", "Scholarships", "Programs", "Volunteering", "COOPs"];
 const TAB_TYPE_MAP = {
@@ -32,7 +32,11 @@ export default function OpportunitiesPage({ bookmarkedIds, onBookmark }) {
         if (major !== "Major") url += `&major=${encodeURIComponent(major)}`;
         const res = await fetch(url);
         const data = await res.json();
-        setOpportunities(data.results?.length ? data.results : OPPORTUNITIES);
+        if (data.results?.length) {
+          setOpportunities(data.results);
+        } else {
+          setOpportunities(OPPORTUNITIES);
+        }
       } catch {
         setOpportunities(OPPORTUNITIES);
       } finally {
@@ -51,9 +55,9 @@ export default function OpportunitiesPage({ bookmarkedIds, onBookmark }) {
     paid: o.is_paid ?? o.paid,
     urgent: o.is_urgent ?? o.urgent,
     company: o.organization_name || o.company,
-    major: o.major,
-    location: o.location?.replace(", Saudi Arabia", "") || "",
-    deadline: o.application_deadline || o.deadline,
+    major: o.major || "General",
+    location: o.location?.replace(", Saudi Arabia", "") || "Saudi Arabia",
+    deadline: o.application_deadline || o.deadline || "2099-12-31",
     description: o.description,
     link: o.external_url || o.link || "#",
     responsibilities: o.responsibilities,
