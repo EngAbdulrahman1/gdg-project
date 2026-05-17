@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { daysLeft } from "../data/opportunities";
 
 const TYPE_COLORS = {
   Internship:  { bg: "#e6f4ea", text: "#1e7e34" },

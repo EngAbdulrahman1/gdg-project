@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { OPPORTUNITIES } from "../data/opportunities";
 import { OpportunityCard } from "../components/OpportunityCard";
 import OpportunityDetail from "./OpportunityDetail";
 
