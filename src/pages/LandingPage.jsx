@@ -3,7 +3,7 @@ import howItWorks from "../assets/how-it-works.png";
 import getStarted from "../assets/get-started.png";
 import logo from "../assets/logo.png";
 
-export default function LandingPage({ onGetStarted }) {
+export default function LandingPage({ onGetStarted, onLogin }) {
   return (
     <div style={{ minHeight: "100vh", fontFamily: "'Inter', sans-serif" }}>
 
@@ -18,6 +18,7 @@ export default function LandingPage({ onGetStarted }) {
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <span style={{ color: "#fff", fontSize: "18px" }}>Already have an account?</span>
           <button
+            onClick={onLogin}
             style={{
               background: "linear-gradient(135deg, #09ADB0, #fff)",
               color: "#1E1E1E", border: "1px solid #2C2C2C",
@@ -109,14 +110,13 @@ export default function LandingPage({ onGetStarted }) {
             justifyContent: "center", flexWrap: "wrap",
           }}>
 
-            
+            {/* Card 1 - Why us */}
             <div
               style={{
                 flex: "1 1 380px", maxWidth: "480px", height: "500px",
                 borderRadius: "16px", border: "4px solid #000", overflow: "hidden",
                 display: "flex", flexDirection: "column",
                 transition: "transform 0.15s, box-shadow 0.15s", cursor: "pointer",
-                
                 background: "linear-gradient(145deg, rgba(200,240,220,0.85) 0%, rgba(220,215,255,0.9) 60%, rgba(255,255,255,0.95) 100%)",
               }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.15)"; }}
@@ -131,8 +131,7 @@ export default function LandingPage({ onGetStarted }) {
                     <path d="M50 5 C53 5 55 8 55 12 L55 20 C55 22 57 24 59 23 L66 19 C70 17 74 19 76 23 C78 27 76 31 72 33 L65 37 C63 38 63 41 65 42 L72 46 C76 48 78 52 76 56 C74 60 70 62 66 60 L59 56 C57 55 55 57 55 59 L55 67 C55 71 53 74 50 74 C47 74 45 71 45 67 L45 59 C45 57 43 55 41 56 L34 60 C30 62 26 60 24 56 C22 52 24 48 28 46 L35 42 C37 41 37 38 35 37 L28 33 C24 31 22 27 24 23 C26 19 30 17 34 19 L41 23 C43 24 45 22 45 20 L45 12 C45 8 47 5 50 5Z" />
                   </svg>
                 </div>
-                
-                <h3 style={{ margin: 0, fontSize: "28px", fontWeight: 700, color: "#101010", textAlign: "left" }}>
+                <h3 style={{ margin: 0, fontSize: "22px", fontWeight: 700, color: "#101010", textAlign: "left" }}>
                   Why us?
                 </h3>
                 <p style={{ margin: 0, fontSize: "16px", color: "#333", lineHeight: 1.6, textAlign: "left" }}>
@@ -144,7 +143,7 @@ export default function LandingPage({ onGetStarted }) {
               </div>
             </div>
 
-            
+            {/* Card 2 - How It Works */}
             <div
               style={{
                 flex: "1 1 380px", maxWidth: "480px", height: "500px",
@@ -164,8 +163,7 @@ export default function LandingPage({ onGetStarted }) {
                   width: "32px", height: "16px",
                   background: "#4CAF50", borderRadius: "16px 16px 0 0",
                 }} />
-                
-                <h3 style={{ margin: 0, fontSize: "28px", fontWeight: 700, color: "#101010", textAlign: "left" }}>
+                <h3 style={{ margin: 0, fontSize: "22px", fontWeight: 700, color: "#101010", textAlign: "left" }}>
                   How It Works
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: "18px", fontSize: "16px", color: "#333", lineHeight: 1.7, textAlign: "left" }}>
@@ -179,7 +177,7 @@ export default function LandingPage({ onGetStarted }) {
               </div>
             </div>
 
-            
+            {/* Card 3 - Ready to Get Started */}
             <div
               style={{
                 flex: "1 1 380px", maxWidth: "480px", height: "500px",
@@ -196,8 +194,7 @@ export default function LandingPage({ onGetStarted }) {
                 display: "flex", flexDirection: "column", gap: "20px",
               }}>
                 <div style={{ fontSize: "26px", color: "#7B61FF", lineHeight: 1, textAlign: "left" }}>✦</div>
-                
-                <h3 style={{ margin: 0, fontSize: "28px", fontWeight: 700, color: "#101010", textAlign: "left" }}>
+                <h3 style={{ margin: 0, fontSize: "22px", fontWeight: 700, color: "#101010", textAlign: "left" }}>
                   Ready to Get Started?
                 </h3>
                 <p style={{ margin: 0, fontSize: "16px", color: "#333", lineHeight: 1.6, textAlign: "left" }}>

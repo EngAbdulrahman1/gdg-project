@@ -17,7 +17,47 @@ function App() {
   };
 
   if (activePage === "landing") {
-    return <LandingPage onGetStarted={() => setActivePage("opportunities")} />;
+    return (
+      <LandingPage
+        onGetStarted={() => setActivePage("opportunities")}
+        onLogin={() => setActivePage("login")}
+      />
+    );
+  }
+
+  
+  if (activePage === "login") {
+    return (
+      <div style={{
+        minHeight: "100vh", display: "flex",
+        alignItems: "center", justifyContent: "center",
+        background: "#e8e4f5", fontFamily: "Inter, sans-serif"
+      }}>
+        <div style={{
+          background: "#fff", borderRadius: "16px",
+          padding: "40px", width: "400px",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+          textAlign: "center"
+        }}>
+          <h2 style={{ color: "#3d2a7a", marginBottom: "8px" }}>Log in</h2>
+          <p style={{ color: "#94a3b8", fontSize: "14px", marginBottom: "24px" }}>
+            
+          </p>
+          
+          <button
+            onClick={() => setActivePage("landing")}
+            style={{
+              background: "#3d2a7a", color: "#fff",
+              border: "none", borderRadius: "999px",
+              padding: "10px 24px", cursor: "pointer",
+              fontSize: "14px"
+            }}
+          >
+            ← Back to Landing
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -48,5 +88,6 @@ function App() {
 }
 
 export default App;
+
 
 
