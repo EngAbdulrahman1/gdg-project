@@ -34,10 +34,10 @@ export default function OpportunitiesPage({ bookmarkedIds, onBookmark }) {
         if (data.results?.length) {
           setOpportunities(data.results);
         } else {
-          setOpportunities(OPPORTUNITIES);
+          setOpportunities([]);
         }
       } catch {
-        setOpportunities(OPPORTUNITIES);
+        setOpportunities([]);
       } finally {
         setLoading(false);
       }
@@ -63,6 +63,14 @@ export default function OpportunitiesPage({ bookmarkedIds, onBookmark }) {
     requirements: o.requirements,
     benefits: o.benefits,
     isExpired: o.is_expired,
+    external_url: o.external_url,
+    application_deadline: o.application_deadline,
+    opportunity_type: o.opportunity_type,
+    organization_name: o.organization_name,
+    is_paid: o.is_paid,
+    is_urgent: o.is_urgent,
+    is_expired: o.is_expired,
+    created_at: o.created_at,
   }));
 
   if (selectedOpp) {
