@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+
+function daysLeft(dateStr) {
+  const diff = new Date(dateStr) - new Date();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
 const TYPE_COLORS = {
   Internship:  { bg: "#e6f4ea", text: "#1e7e34" },
   Scholarship: { bg: "#fff3cd", text: "#b8860b" },
@@ -71,7 +77,7 @@ export function OpportunityCard({ opp, isBookmarked, onBookmark, onClick }) {
   });
   const colors = TYPE_COLORS[opp.type] || { bg: "#f0f0f0", text: "#666" };
   const timeAgo = TIME_AGO[(opp.id - 1) % TIME_AGO.length];
-  const isUrgent = daysLeft(opp.deadline) <= 30;
+  const isUrgent = opp.urgent || opp.is_urgent || daysLeft(opp.deadline) <= 30;
 
   const tags = [
     opp.paid ? "Paid" : "Unpaid",
@@ -101,7 +107,7 @@ export function OpportunityCard({ opp, isBookmarked, onBookmark, onClick }) {
             <p style={{ margin: 0, fontSize: "12px", fontWeight: 600, color: "#1e1b3a" }}>{opp.company}</p>
             <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
               <span style={{ fontSize: "11px" }}>📍</span>
-              <span style={{ fontSize: "11px", color: "#64748b" }}>{opp.location}, Saudi Arabia</span>
+              <span style={{ fontSize: "11px", color: "#64748b" }}>{opp.location}</span>
             </div>
           </div>
         </div>
