@@ -1,10 +1,58 @@
-import { OPPORTUNITIES, daysLeft } from "../data/opportunities";
+import { useState, useEffect } from "react";
 import { OpportunityCard } from "../components/OpportunityCard";
 
-export default function DeadlineTrackerPage({ bookmarkedIds, onBookmark, onViewDetail }) {
-  const bookmarked = OPPORTUNITIES
-    .filter(o => bookmarkedIds.has(o.id))
-    .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+const BASE_URL = "https://opportunityhub-api.onrender.com/api";
+
+function daysLeft(dateStr) {
+  const deadline = new Date(dateStr);
+  const today = new Date();
+  return Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+}
+
+export default function DeadlineTrackerPage({ onBookmark, onViewDetail }) {
+  const [bookmarks, setBookmarks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetchBookmarks();
+  }, []);
+
+  async function fetchBookmarks() {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("ohToken");
+      const res = await fetch(`${BASE_URL}/bookmarks/`, {
+        headers: { Authorization: `Token ${token}` },
+      });
+      const data = await res.json();
+      setBookmarks(data.results || []);
+    } catch (err) {
+      console.error("Failed to fetch bookmarks:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleRemoveBookmark(bookmarkId, opportunityId) {
+    try {
+      const token = localStorage.getItem("ohToken");
+      await fetch(`${BASE_URL}/bookmarks/${bookmarkId}/`, {
+        method: "DELETE",
+        headers: { Authorization: `Token ${token}` },
+      });
+      
+      setBookmarks(prev => prev.filter(b => b.id !== bookmarkId));
+      
+      if (onBookmark) onBookmark(opportunityId);
+    } catch (err) {
+      console.error("Failed to remove bookmark:", err);
+    }
+  }
+
+  const filtered = bookmarks.filter(b =>
+    b.opportunity?.title?.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div style={{
@@ -34,16 +82,22 @@ export default function DeadlineTrackerPage({ bookmarkedIds, onBookmark, onViewD
           padding: "10px 16px", width: "281px", height: "40px",
           border: "1px solid #e2e8f0", boxSizing: "border-box",
         }}>
-          <input placeholder="Search saved opportunities..." style={{
-            border: "none", outline: "none", fontSize: "13px",
-            color: "#334155", background: "transparent",
-            width: "100%", fontFamily: "inherit",
-          }} />
+          <input
+            placeholder="Search saved opportunities..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              border: "none", outline: "none", fontSize: "13px",
+              color: "#334155", background: "transparent",
+              width: "100%", fontFamily: "inherit",
+            }}
+          />
           <span style={{ color: "#94a3b8", fontSize: "14px", marginLeft: "8px" }}>🔍</span>
         </div>
       </div>
 
       <div style={{ flex: 1, padding: "24px 32px" }}>
+        
         <div style={{
           background: "#fff", borderRadius: "12px",
           border: "1px solid #E4E5E8",
@@ -61,21 +115,26 @@ export default function DeadlineTrackerPage({ bookmarkedIds, onBookmark, onViewD
             color: "#979797", fontFamily: "Inter, sans-serif",
             width: "244px"
           }}>
-            {bookmarked.length} saved · sorted by nearest deadline
+            {filtered.length} saved · sorted by nearest deadline
           </p>
 
-          {bookmarked.length === 0 ? (
+          {loading ? (
+            <div style={{ textAlign: "center", padding: "30px", color: "#94a3b8" }}>
+              Loading...
+            </div>
+          ) : filtered.length === 0 ? (
             <div style={{ textAlign: "center", padding: "30px", color: "#94a3b8" }}>
               <p>No bookmarked opportunities yet.</p>
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
-              {bookmarked.map(opp => {
-                const days = daysLeft(opp.deadline);
+              {filtered.map(bookmark => {
+                const opp = bookmark.opportunity;
+                const days = daysLeft(opp.application_deadline);
                 const pct = days <= 0 ? 100 : Math.max(0, Math.min(100, (days / 60) * 100));
                 const color = days <= 0 ? "#e05252" : days <= 7 ? "#e05252" : days <= 14 ? "#f97316" : "#4db8a8";
                 return (
-                  <div key={opp.id} style={{
+                  <div key={bookmark.id} style={{
                     background: "#fff",
                     borderBottom: "1px solid #f0f0f0",
                     padding: "16px 0",
@@ -93,17 +152,31 @@ export default function DeadlineTrackerPage({ bookmarkedIds, onBookmark, onViewD
                           display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px",
                           flexShrink: 0,
                         }}>🏢</div>
-                        <span style={{ fontSize: "14px", fontWeight: 600, color: "#2B2B2B", fontFamily: "Inter, sans-serif" }}>{opp.title}</span>
+                        <span style={{ fontSize: "14px", fontWeight: 600, color: "#2B2B2B", fontFamily: "Inter, sans-serif" }}>
+                          {opp.title}
+                        </span>
                       </div>
-                      <span style={{ fontSize: "13px", fontWeight: 600, color, whiteSpace: "nowrap", fontFamily: "Inter, sans-serif" }}>
-                        {days > 0 ? `${days} days left` : "Expired"}
-                      </span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <span style={{ fontSize: "13px", fontWeight: 600, color, whiteSpace: "nowrap", fontFamily: "Inter, sans-serif" }}>
+                          {days > 0 ? `${days} days left` : "Expired"}
+                        </span>
+                        
+                        <button
+                          onClick={() => handleRemoveBookmark(bookmark.id, opp.id)}
+                          style={{
+                            background: "none", border: "none",
+                            cursor: "pointer", color: "#e05252",
+                            fontSize: "16px", padding: "0",
+                          }}
+                          title="Remove bookmark"
+                        >✕</button>
+                      </div>
                     </div>
                     <div style={{ height: 6, background: "#f0f0f0", borderRadius: 99, overflow: "hidden", width: "100%" }}>
                       <div style={{ width: `${pct}%`, height: "100%", background: color, borderRadius: 99, transition: "width 0.4s" }} />
                     </div>
                     <p style={{ margin: "4px 0 0", fontSize: "11px", color: "#979797", fontFamily: "Inter, sans-serif" }}>
-                      Deadline: {new Date(opp.deadline).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                      Deadline: {new Date(opp.application_deadline).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                     </p>
                   </div>
                 );
@@ -112,6 +185,7 @@ export default function DeadlineTrackerPage({ bookmarkedIds, onBookmark, onViewD
           )}
         </div>
 
+        
         <h2 style={{
           fontSize: "27px", fontWeight: 700,
           color: "#2B2B2B", marginBottom: "16px",
@@ -120,19 +194,23 @@ export default function DeadlineTrackerPage({ bookmarkedIds, onBookmark, onViewD
           Your Saved Opportunities
         </h2>
 
-        {bookmarked.length === 0 ? (
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>
+            Loading...
+          </div>
+        ) : filtered.length === 0 ? (
           <div style={{ textAlign: "center", padding: "40px", color: "#6b5c9e" }}>
             <div style={{ fontSize: 48, marginBottom: 12 }}>📌</div>
             <p>Bookmark opportunities to see them here.</p>
           </div>
         ) : (
           <div className="cards-grid">
-            {bookmarked.map(opp => (
+            {filtered.map(bookmark => (
               <OpportunityCard
-                key={opp.id}
-                opp={opp}
+                key={bookmark.id}
+                opp={bookmark.opportunity}
                 isBookmarked={true}
-                onBookmark={onBookmark}
+                onBookmark={() => handleRemoveBookmark(bookmark.id, bookmark.opportunity.id)}
                 onClick={onViewDetail}
               />
             ))}
