@@ -1,11 +1,12 @@
 import { useState } from "react";
 import OpportunitiesPage from "./pages/OpportunitiesPage";
 import DeadlineTrackerPage from "./pages/DeadlineTrackerPage";
+import LandingPage from "./pages/LandingPage";
 import "./index.css";
 
 function App() {
   const [bookmarkedIds, setBookmarkedIds] = useState(new Set());
-  const [activePage, setActivePage] = useState("opportunities");
+  const [activePage, setActivePage] = useState("landing");
 
   const handleBookmark = (id) => {
     setBookmarkedIds(prev => {
@@ -14,6 +15,10 @@ function App() {
       return next;
     });
   };
+
+  if (activePage === "landing") {
+    return <LandingPage onGetStarted={() => setActivePage("opportunities")} />;
+  }
 
   return (
     <div className="app-layout">
@@ -43,4 +48,5 @@ function App() {
 }
 
 export default App;
+
 
